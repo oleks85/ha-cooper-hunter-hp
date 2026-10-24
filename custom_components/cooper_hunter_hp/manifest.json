@@ -1,9 +1,6 @@
 {
   "domain": "cooper_hunter_hp",
   "name": "Cooper&Hunter Heat Pump (Modbus)",
-  "categories": [
-    "climate"
-  ],
   "codeowners": [
     "@oleks85"
   ],
