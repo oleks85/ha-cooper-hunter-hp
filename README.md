@@ -28,7 +28,8 @@ Gateway mode: *Modbus TCP ⇄ RTU* → choose "Modbus TCP"; *transparent* → ch
 
 ## Installation
 
-1. HACS → Custom repositories → add this repository (category *Integration*) → install,
+1. HACS → Custom repositories → add `https://github.com/oleks85/ha-cooper-hunter-hp`
+   (category *Integration*) → install,
    or copy `custom_components/cooper_hunter_hp` into `/config/custom_components/`.
 2. Restart Home Assistant.
 3. Settings → Devices & services → Add integration → *Cooper&Hunter Heat Pump (Modbus)*.
