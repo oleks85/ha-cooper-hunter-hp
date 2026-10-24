@@ -1,0 +1,13 @@
+{
+  "domain": "cooper_hunter_hp",
+  "name": "Cooper&Hunter Heat Pump (Modbus)",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/OWNER/ha-cooper-hunter-hp",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/OWNER/ha-cooper-hunter-hp/issues",
+  "loggers": ["custom_components.cooper_hunter_hp"],
+  "requirements": ["pyserial-asyncio-fast>=0.11"],
+  "version": "1.0.0"
+}

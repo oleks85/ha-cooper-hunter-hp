@@ -1,0 +1,784 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Тип підключення",
+        "description": "Як підключено шину RS485 теплового насоса?",
+        "data": {
+          "transport": "Тип підключення"
+        }
+      },
+      "network": {
+        "title": "Шлюз RS485",
+        "description": "Modbus-шлюз, підключений до клем RS485 A/B теплового насоса.",
+        "data": {
+          "host": "IP / адреса шлюзу",
+          "port": "Порт",
+          "name": "Назва пристрою",
+          "model": "Модель",
+          "slave": "Modbus slave ID",
+          "entity_prefix": "Префікс ID сутностей"
+        }
+      },
+      "serial": {
+        "title": "Послідовний порт",
+        "description": "USB-RS485 адаптер, підключений до теплового насоса.",
+        "data": {
+          "serial_port": "Порт",
+          "baudrate": "Швидкість",
+          "parity": "Парність",
+          "stopbits": "Стоп-біти",
+          "name": "Назва пристрою",
+          "model": "Модель",
+          "slave": "Modbus slave ID",
+          "entity_prefix": "Префікс ID сутностей"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Не вдалося прочитати тепловий насос. Перевірте адресу, порт, slave ID і режим шлюзу.",
+      "unknown": "Неочікувана помилка"
+    },
+    "abort": {
+      "already_configured": "Цей тепловий насос уже налаштовано"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Опитування",
+        "data": {
+          "scan_interval": "Інтервал опитування стану (с)",
+          "parameter_interval": "Інтервал опитування параметрів (с)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "transport": {
+      "options": {
+        "tcp": "Modbus TCP шлюз",
+        "rtu_over_tcp": "RTU over TCP (прозорий шлюз)",
+        "serial": "Послідовний порт (USB-RS485)"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "water_inlet_temperature": {
+        "name": "Температура звороту (вхід)"
+      },
+      "water_outlet_temperature": {
+        "name": "Температура подачі (вихід)"
+      },
+      "dhw_tank_temperature": {
+        "name": "Температура бака ГВП"
+      },
+      "buffer_tank_temperature": {
+        "name": "Температура буферного бака"
+      },
+      "outdoor_temperature": {
+        "name": "Температура на вулиці"
+      },
+      "room_temperature": {
+        "name": "Кімнатна температура"
+      },
+      "outlet_after_heater_temperature": {
+        "name": "Подача після електротену"
+      },
+      "heating_return_temperature": {
+        "name": "Зворот опалення (T40)"
+      },
+      "heating_leaving_temperature": {
+        "name": "Подача опалення (T41)"
+      },
+      "mix_tube_temperature": {
+        "name": "Вихід змішувача (T42)"
+      },
+      "dhw_return_temperature": {
+        "name": "Зворот ГВП (T43)"
+      },
+      "dhw_leaving_temperature": {
+        "name": "Подача ГВП (T44)"
+      },
+      "current_temperature_target": {
+        "name": "Активна цільова температура"
+      },
+      "compensated_temperature_target": {
+        "name": "Цільова температура очікування"
+      },
+      "coil_temperature": {
+        "name": "Температура випарника"
+      },
+      "distributor_tube_temperature": {
+        "name": "Температура розподільника"
+      },
+      "suction_temperature": {
+        "name": "Температура всмоктування"
+      },
+      "discharge_temperature": {
+        "name": "Температура нагнітання"
+      },
+      "antifreeze_temperature": {
+        "name": "Температура антифризу"
+      },
+      "evi_inlet_temperature": {
+        "name": "Температура входу EVI"
+      },
+      "evi_outlet_temperature": {
+        "name": "Температура виходу EVI"
+      },
+      "evaporation_temperature": {
+        "name": "Температура випаровування"
+      },
+      "exhaust_superheat": {
+        "name": "Перегрів нагнітання"
+      },
+      "superheat": {
+        "name": "Перегрів всмоктування"
+      },
+      "low_pressure": {
+        "name": "Низький тиск"
+      },
+      "eev_steps": {
+        "name": "Відкриття ЕРВ"
+      },
+      "evi_eev_steps": {
+        "name": "Відкриття ЕРВ EVI"
+      },
+      "compressor_frequency": {
+        "name": "Частота компресора"
+      },
+      "compressor_target_frequency": {
+        "name": "Задана частота компресора"
+      },
+      "compressor_max_frequency": {
+        "name": "Макс. частота компресора (драйвер)"
+      },
+      "fan_1_speed": {
+        "name": "Оберти вентилятора 1"
+      },
+      "fan_2_speed": {
+        "name": "Оберти вентилятора 2"
+      },
+      "fan_target_speed": {
+        "name": "Задані оберти вентилятора"
+      },
+      "compressor_starts": {
+        "name": "Кількість пусків компресора"
+      },
+      "compressor_runtime": {
+        "name": "Напрацювання компресора"
+      },
+      "backup_heater_dhw_runtime": {
+        "name": "Напрацювання тену (ГВП)"
+      },
+      "backup_heater_heating_runtime": {
+        "name": "Напрацювання тену (опалення)"
+      },
+      "water_flow": {
+        "name": "Витрата води"
+      },
+      "power_input": {
+        "name": "Споживана потужність"
+      },
+      "heating_capacity": {
+        "name": "Теплова потужність"
+      },
+      "cop": {
+        "name": "COP"
+      },
+      "energy_consumption": {
+        "name": "Спожита енергія (всього)"
+      },
+      "heating_energy_consumed": {
+        "name": "Спожито на опалення"
+      },
+      "heating_energy_generated": {
+        "name": "Вироблено тепла на опалення"
+      },
+      "cooling_energy_consumed": {
+        "name": "Спожито на охолодження"
+      },
+      "cooling_energy_generated": {
+        "name": "Вироблено холоду"
+      },
+      "dhw_energy_consumed": {
+        "name": "Спожито на ГВП"
+      },
+      "dhw_energy_generated": {
+        "name": "Вироблено тепла на ГВП"
+      },
+      "ac_input_voltage": {
+        "name": "Напруга живлення"
+      },
+      "ac_input_current": {
+        "name": "Струм живлення"
+      },
+      "input_current_1": {
+        "name": "Струм L1"
+      },
+      "input_current_2": {
+        "name": "Струм L2"
+      },
+      "input_current_3": {
+        "name": "Струм L3"
+      },
+      "compressor_phase_current": {
+        "name": "Фазний струм компресора"
+      },
+      "dc_bus_voltage": {
+        "name": "Напруга DC-шини"
+      },
+      "ipm_temperature": {
+        "name": "Температура IPM-модуля"
+      },
+      "main_pump_pwm_output": {
+        "name": "ШІМ насоса (вихід)"
+      },
+      "main_pump_pwm_feedback": {
+        "name": "ШІМ насоса (зворотний зв'язок)"
+      },
+      "operating_state": {
+        "name": "Поточний стан роботи",
+        "state": {
+          "cooling": "Охолодження",
+          "heating": "Опалення",
+          "defrost": "Розморожування",
+          "disinfection": "Дезінфекція",
+          "dhw": "Гаряча вода"
+        }
+      },
+      "driver_board_status": {
+        "name": "Статус плати драйвера"
+      },
+      "display_comm_success": {
+        "name": "Якість зв'язку з пультом"
+      },
+      "inverter_comm_success": {
+        "name": "Якість зв'язку з інвертором"
+      },
+      "fault_register_2081": {
+        "name": "Регістр аварій 2081"
+      },
+      "fault_register_2082": {
+        "name": "Регістр аварій 2082"
+      },
+      "fault_register_2083": {
+        "name": "Регістр аварій 2083"
+      },
+      "fault_register_2084": {
+        "name": "Регістр аварій 2084"
+      },
+      "fault_register_2085": {
+        "name": "Регістр аварій 2085"
+      },
+      "fault_register_2086": {
+        "name": "Регістр аварій 2086"
+      },
+      "fault_register_2087": {
+        "name": "Регістр аварій 2087"
+      },
+      "fault_register_2088": {
+        "name": "Регістр аварій 2088"
+      },
+      "fault_register_2089": {
+        "name": "Регістр аварій 2089"
+      },
+      "fault_register_2090": {
+        "name": "Регістр аварій 2090"
+      },
+      "output_status_register": {
+        "name": "Регістр стану виходів"
+      },
+      "input_status_register": {
+        "name": "Регістр стану входів"
+      },
+      "water_delta_t": {
+        "name": "ΔT води (подача − зворот)"
+      },
+      "thermal_power": {
+        "name": "Теплова потужність (розрахунок)"
+      },
+      "active_faults": {
+        "name": "Активні аварії"
+      },
+      "firmware": {
+        "name": "Прошивка контролера"
+      }
+    },
+    "binary_sensor": {
+      "power_state": {
+        "name": "Насос увімкнено"
+      },
+      "defrost_active": {
+        "name": "Розморожування"
+      },
+      "disinfection_active": {
+        "name": "Дезінфекція триває"
+      },
+      "silent_mode_active": {
+        "name": "Тихий режим активний"
+      },
+      "fan_high_speed": {
+        "name": "Вентилятор: висока швидкість"
+      },
+      "fan_low_speed": {
+        "name": "Вентилятор: низька швидкість"
+      },
+      "main_circulation_pump": {
+        "name": "Основний циркуляційний насос"
+      },
+      "dhw_pump_running": {
+        "name": "Насос ГВП"
+      },
+      "four_way_valve": {
+        "name": "4-ходовий клапан"
+      },
+      "electric_heater_stage_1": {
+        "name": "Електротен ступінь 1"
+      },
+      "electric_heater_stage_2": {
+        "name": "Електротен ступінь 2"
+      },
+      "dhw_3_way_valve": {
+        "name": "3-ходовий клапан ГВП"
+      },
+      "alarm_output": {
+        "name": "Вихід аварії"
+      },
+      "crankcase_heater": {
+        "name": "Підігрів картера"
+      },
+      "chassis_heater": {
+        "name": "Підігрів піддону"
+      },
+      "heat_pump_enabled": {
+        "name": "Вихід теплового насоса"
+      },
+      "hydrobox_electric_heater": {
+        "name": "Електротен гідромодуля"
+      },
+      "tank_electric_heater": {
+        "name": "Електротен бака"
+      },
+      "high_pressure_switch": {
+        "name": "Реле високого тиску"
+      },
+      "low_pressure_switch": {
+        "name": "Реле низького тиску"
+      },
+      "electric_heater_overload_input": {
+        "name": "Вхід перевантаження тену"
+      },
+      "emergency_input": {
+        "name": "Аварійний вхід"
+      },
+      "ac_mode_input": {
+        "name": "Вхід запиту опалення/охолодження"
+      },
+      "dhw_mode_input": {
+        "name": "Вхід запиту ГВП"
+      },
+      "ac_switch": {
+        "name": "Вхід зв'язку з кондиціонером"
+      },
+      "water_flow_detected": {
+        "name": "Протік води"
+      },
+      "ipm_overcurrent_fault": {
+        "name": "Перевантаження IPM за струмом"
+      },
+      "compressor_drive_fault": {
+        "name": "Несправність драйвера компресора"
+      },
+      "compressor_overcurrent": {
+        "name": "Перевантаження компресора за струмом"
+      },
+      "ac_phase_loss": {
+        "name": "Втрата фази живлення"
+      },
+      "ipm_sampling_fault": {
+        "name": "Помилка вимірювання струму IPM"
+      },
+      "drive_board_overheat": {
+        "name": "Перегрів плати драйвера"
+      },
+      "refrigerant_charge_fault": {
+        "name": "Нестача холодоагенту"
+      },
+      "dc_bus_overvoltage": {
+        "name": "Перенапруга DC-шини"
+      },
+      "dc_bus_undervoltage": {
+        "name": "Низька напруга DC-шини"
+      },
+      "ac_undervoltage": {
+        "name": "Низька напруга живлення"
+      },
+      "ac_overcurrent": {
+        "name": "Перевантаження живлення за струмом"
+      },
+      "ipm_overheat_protection": {
+        "name": "Захист від перегріву IPM"
+      },
+      "compressor_phase_loss": {
+        "name": "Втрата фази компресора"
+      },
+      "eeprom_fault": {
+        "name": "Помилка EEPROM"
+      },
+      "ac_overvoltage_protection": {
+        "name": "Захист від перенапруги"
+      },
+      "compressor_overspeed_protection": {
+        "name": "Перевищення обертів компресора"
+      },
+      "compressor_frequency_reduction_warning": {
+        "name": "Обмеження частоти компресора"
+      },
+      "weak_magnetic_field_warning": {
+        "name": "Попередження: послаблення поля"
+      },
+      "power_module_overheat_warning": {
+        "name": "Попередження: перегрів силового модуля"
+      },
+      "eeprom_warning": {
+        "name": "Попередження EEPROM"
+      },
+      "compressor_start_failure": {
+        "name": "Невдалий пуск компресора"
+      },
+      "heating_return_sensor_fault": {
+        "name": "Несправність датчика звороту опалення"
+      },
+      "heating_outlet_sensor_fault": {
+        "name": "Несправність датчика подачі опалення"
+      },
+      "high_pressure_protection": {
+        "name": "Захист за високим тиском"
+      },
+      "low_pressure_protection": {
+        "name": "Захист за низьким тиском"
+      },
+      "water_flow_protection": {
+        "name": "Захист за протоком води"
+      },
+      "electric_heater_overload_protection": {
+        "name": "Перевантаження електротену"
+      },
+      "freeze_protection_stage_1": {
+        "name": "Захист від замерзання, ступінь 1"
+      },
+      "freeze_protection_stage_2": {
+        "name": "Захист від замерзання, ступінь 2"
+      },
+      "system_freeze_protection": {
+        "name": "Захист системи від замерзання"
+      },
+      "room_temperature_sensor_fault": {
+        "name": "Несправність кімнатного датчика"
+      },
+      "discharge_overtemperature_protection": {
+        "name": "Перегрів нагнітання"
+      },
+      "fan_1_overload_limitation": {
+        "name": "Перевантаження вентилятора 1"
+      },
+      "fan_2_overload_limitation": {
+        "name": "Перевантаження вентилятора 2"
+      },
+      "excessive_water_delta_t_protection": {
+        "name": "Завелика різниця температур води"
+      },
+      "outlet_water_overtemperature_protection": {
+        "name": "Перегрів води на подачі"
+      },
+      "evaporator_outlet_sensor_fault": {
+        "name": "Несправність датчика виходу випарника"
+      },
+      "return_water_sensor_fault": {
+        "name": "Несправність датчика звороту"
+      },
+      "outlet_water_sensor_fault": {
+        "name": "Несправність датчика подачі"
+      },
+      "repeated_high_pressure_protection": {
+        "name": "Повторний захист за високим тиском"
+      },
+      "repeated_low_pressure_protection": {
+        "name": "Повторний захист за низьким тиском"
+      },
+      "repeated_water_flow_protection": {
+        "name": "Повторний захист за протоком"
+      },
+      "repeated_electric_heater_protection": {
+        "name": "Повторний захист електротену"
+      },
+      "repeated_freeze_protection": {
+        "name": "Повторний захист від замерзання"
+      },
+      "repeated_discharge_overtemperature": {
+        "name": "Повторний перегрів нагнітання"
+      },
+      "repeated_excessive_delta_t": {
+        "name": "Повторна завелика різниця температур"
+      },
+      "repeated_low_outlet_temperature": {
+        "name": "Повторна низька температура подачі"
+      },
+      "repeated_high_outlet_temperature": {
+        "name": "Повторна висока температура подачі"
+      },
+      "water_inlet_sensor_fault": {
+        "name": "Несправність датчика входу води"
+      },
+      "water_outlet_sensor_fault": {
+        "name": "Несправність датчика виходу води"
+      },
+      "heat_exchanger_sensor_fault": {
+        "name": "Несправність датчика випарника"
+      },
+      "outdoor_temperature_sensor_fault": {
+        "name": "Несправність вуличного датчика"
+      },
+      "return_air_sensor_fault": {
+        "name": "Несправність датчика всмоктування"
+      },
+      "anti_freeze_sensor_fault": {
+        "name": "Несправність датчика антифризу"
+      },
+      "heat_exchanger_outlet_sensor_fault": {
+        "name": "Несправність датчика виходу теплообмінника"
+      },
+      "evi_inlet_sensor_fault": {
+        "name": "Несправність датчика входу EVI"
+      },
+      "evi_outlet_sensor_fault": {
+        "name": "Несправність датчика виходу EVI"
+      },
+      "discharge_temperature_sensor_fault": {
+        "name": "Несправність датчика нагнітання"
+      },
+      "compressor_running": {
+        "name": "Компресор працює"
+      },
+      "fault": {
+        "name": "Аварія"
+      }
+    },
+    "number": {
+      "dhw_setpoint": {
+        "name": "Уставка ГВП"
+      },
+      "heating_setpoint": {
+        "name": "Уставка опалення"
+      },
+      "cooling_setpoint": {
+        "name": "Уставка охолодження"
+      },
+      "room_setpoint": {
+        "name": "Уставка кімнатної температури"
+      },
+      "curve_slope": {
+        "name": "Нахил погодної кривої"
+      },
+      "curve_offset": {
+        "name": "Зсув погодної кривої"
+      },
+      "forced_dhw_time": {
+        "name": "Час перемикання режимів ГВП/опалення"
+      },
+      "maximum_outlet_temperature": {
+        "name": "Макс. температура подачі ТН"
+      },
+      "max_outlet_heating": {
+        "name": "Макс. температура подачі в опаленні"
+      },
+      "main_pump_interval": {
+        "name": "Інтервал насоса"
+      },
+      "main_pump_runtime": {
+        "name": "Тривалість роботи насоса"
+      },
+      "circulation_pump_speed": {
+        "name": "Швидкість циркуляційного насоса"
+      },
+      "disinfection_temperature": {
+        "name": "Температура дезінфекції"
+      },
+      "disinfection_duration": {
+        "name": "Тривалість дезінфекції"
+      },
+      "disinfection_start_hour": {
+        "name": "Година початку дезінфекції"
+      },
+      "disinfection_interval": {
+        "name": "Період дезінфекції"
+      },
+      "heating_restart_delta": {
+        "name": "Гістерезис опалення (увімкнення)"
+      },
+      "heating_standby_delta": {
+        "name": "Гістерезис опалення (очікування)"
+      },
+      "cooling_restart_delta": {
+        "name": "Гістерезис охолодження (увімкнення)"
+      },
+      "cooling_standby_delta": {
+        "name": "Гістерезис охолодження (очікування)"
+      },
+      "dhw_restart_delta": {
+        "name": "Гістерезис ГВП (увімкнення)"
+      },
+      "dhw_standby_delta": {
+        "name": "Гістерезис ГВП (очікування)"
+      },
+      "heater_on_ambient": {
+        "name": "Вулична t° для дозволу тену"
+      },
+      "heater_delay": {
+        "name": "Затримка тену після компресора"
+      },
+      "heater_on_delta": {
+        "name": "Різниця увімкнення тену"
+      },
+      "heater_off_delta": {
+        "name": "Різниця вимкнення тену"
+      },
+      "heater_no_delay_ambient": {
+        "name": "Вулична t° для тену без затримки"
+      },
+      "shutdown_ambient": {
+        "name": "Вулична t° зупинки ТН"
+      },
+      "auto_heating_ambient": {
+        "name": "Вулична t° автозапуску опалення"
+      },
+      "min_cooling_ambient": {
+        "name": "Мін. вулична t° для охолодження"
+      },
+      "dhw_setpoint_min": {
+        "name": "Мінімальна уставка ГВП"
+      },
+      "dhw_setpoint_max": {
+        "name": "Максимальна уставка ГВП"
+      },
+      "heating_setpoint_min": {
+        "name": "Мінімальна уставка опалення"
+      },
+      "heating_setpoint_max": {
+        "name": "Максимальна уставка опалення"
+      },
+      "cooling_setpoint_min": {
+        "name": "Мінімальна уставка охолодження"
+      },
+      "cooling_setpoint_max": {
+        "name": "Максимальна уставка охолодження"
+      }
+    },
+    "select": {
+      "operating_mode": {
+        "name": "Режим роботи",
+        "state": {
+          "dhw": "Гаряча вода",
+          "heating": "Опалення",
+          "cooling": "Охолодження",
+          "dhw_heating": "Гаряча вода + опалення",
+          "dhw_cooling": "Гаряча вода + охолодження"
+        }
+      },
+      "electric_heater_mode": {
+        "name": "Розташування електротену",
+        "state": {
+          "not_available": "Відсутній",
+          "main_circuit": "Основний водяний контур",
+          "dhw_tank": "Бак ГВП",
+          "buffer_tank": "Буферний бак"
+        }
+      },
+      "circulation_pump_mode": {
+        "name": "Режим основного насоса",
+        "state": {
+          "always_on": "Завжди увімкнено",
+          "saving": "Економний",
+          "interval": "Інтервальний"
+        }
+      },
+      "dhw_pump_mode": {
+        "name": "Режим насоса ГВП",
+        "state": {
+          "always_on": "Завжди увімкнено",
+          "saving": "Економний",
+          "interval": "Інтервальний"
+        }
+      },
+      "temperature_control_source": {
+        "name": "Датчик регулювання",
+        "state": {
+          "outlet": "Температура подачі",
+          "room": "Кімнатна температура",
+          "buffer": "Температура буферного бака",
+          "inlet": "Температура звороту"
+        }
+      },
+      "electric_heater_stage": {
+        "name": "Кількість ступенів тену",
+        "state": {
+          "stage_1": "Ступінь 1",
+          "stage_2": "Ступінь 2",
+          "stage_3": "Ступінь 3"
+        }
+      },
+      "defrost_heat_source": {
+        "name": "Джерело тепла для розморожування",
+        "state": {
+          "current": "Поточний контур",
+          "dhw": "Контур ГВП",
+          "heating": "Контур опалення"
+        }
+      }
+    },
+    "switch": {
+      "power": {
+        "name": "Живлення"
+      },
+      "silent_mode": {
+        "name": "Тихий режим"
+      },
+      "weather_compensation": {
+        "name": "Погодозалежне регулювання"
+      },
+      "disinfection": {
+        "name": "Дезінфекція (легіонела)"
+      },
+      "manual_water_pump": {
+        "name": "Ручне керування насосом"
+      },
+      "cooling_enabled": {
+        "name": "Функцію охолодження дозволено"
+      },
+      "heater_during_defrost": {
+        "name": "Електротен під час розморожування"
+      },
+      "power_off_memory": {
+        "name": "Пам'ять стану після вимкнення живлення"
+      }
+    },
+    "button": {
+      "manual_defrost": {
+        "name": "Запустити розморожування"
+      }
+    },
+    "climate": {
+      "heating": {
+        "name": "Опалення / охолодження"
+      }
+    },
+    "water_heater": {
+      "dhw": {
+        "name": "Гаряча вода"
+      }
+    }
+  }
+}

@@ -1,0 +1,784 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connection type",
+        "description": "How is the RS485 bus of the heat pump connected?",
+        "data": {
+          "transport": "Connection type"
+        }
+      },
+      "network": {
+        "title": "RS485 gateway",
+        "description": "Modbus gateway connected to the RS485 A/B terminals of the heat pump.",
+        "data": {
+          "host": "Gateway IP / host",
+          "port": "Port",
+          "name": "Device name",
+          "model": "Model",
+          "slave": "Modbus slave ID",
+          "entity_prefix": "Entity ID prefix"
+        }
+      },
+      "serial": {
+        "title": "Serial port",
+        "description": "USB-RS485 adapter connected to the heat pump.",
+        "data": {
+          "serial_port": "Serial port",
+          "baudrate": "Baud rate",
+          "parity": "Parity",
+          "stopbits": "Stop bits",
+          "name": "Device name",
+          "model": "Model",
+          "slave": "Modbus slave ID",
+          "entity_prefix": "Entity ID prefix"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot read the heat pump. Check address, port, slave ID and gateway mode.",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This heat pump is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Polling",
+        "data": {
+          "scan_interval": "Status polling interval (s)",
+          "parameter_interval": "Parameter polling interval (s)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "transport": {
+      "options": {
+        "tcp": "Modbus TCP gateway",
+        "rtu_over_tcp": "RTU over TCP (transparent gateway)",
+        "serial": "Serial port (USB-RS485)"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "water_inlet_temperature": {
+        "name": "Water inlet temperature"
+      },
+      "water_outlet_temperature": {
+        "name": "Water outlet temperature"
+      },
+      "dhw_tank_temperature": {
+        "name": "DHW tank temperature"
+      },
+      "buffer_tank_temperature": {
+        "name": "Buffer tank temperature"
+      },
+      "outdoor_temperature": {
+        "name": "Outdoor temperature"
+      },
+      "room_temperature": {
+        "name": "Room temperature"
+      },
+      "outlet_after_heater_temperature": {
+        "name": "Outlet after electric heater"
+      },
+      "heating_return_temperature": {
+        "name": "Heating return water temperature (T40)"
+      },
+      "heating_leaving_temperature": {
+        "name": "Heating leaving water temperature (T41)"
+      },
+      "mix_tube_temperature": {
+        "name": "Mixing tube outlet temperature (T42)"
+      },
+      "dhw_return_temperature": {
+        "name": "DHW return water temperature (T43)"
+      },
+      "dhw_leaving_temperature": {
+        "name": "DHW leaving water temperature (T44)"
+      },
+      "current_temperature_target": {
+        "name": "Active target temperature"
+      },
+      "compensated_temperature_target": {
+        "name": "Standby target temperature"
+      },
+      "coil_temperature": {
+        "name": "Coil temperature"
+      },
+      "distributor_tube_temperature": {
+        "name": "Distributor tube temperature"
+      },
+      "suction_temperature": {
+        "name": "Suction temperature"
+      },
+      "discharge_temperature": {
+        "name": "Discharge temperature"
+      },
+      "antifreeze_temperature": {
+        "name": "Antifreeze temperature"
+      },
+      "evi_inlet_temperature": {
+        "name": "EVI inlet temperature"
+      },
+      "evi_outlet_temperature": {
+        "name": "EVI outlet temperature"
+      },
+      "evaporation_temperature": {
+        "name": "Evaporation temperature"
+      },
+      "exhaust_superheat": {
+        "name": "Discharge superheat"
+      },
+      "superheat": {
+        "name": "Suction superheat"
+      },
+      "low_pressure": {
+        "name": "Low pressure"
+      },
+      "eev_steps": {
+        "name": "EEV opening"
+      },
+      "evi_eev_steps": {
+        "name": "EVI EEV opening"
+      },
+      "compressor_frequency": {
+        "name": "Compressor frequency"
+      },
+      "compressor_target_frequency": {
+        "name": "Compressor target frequency"
+      },
+      "compressor_max_frequency": {
+        "name": "Compressor max frequency (driver)"
+      },
+      "fan_1_speed": {
+        "name": "Fan 1 speed"
+      },
+      "fan_2_speed": {
+        "name": "Fan 2 speed"
+      },
+      "fan_target_speed": {
+        "name": "Fan target speed"
+      },
+      "compressor_starts": {
+        "name": "Compressor starts"
+      },
+      "compressor_runtime": {
+        "name": "Compressor running time"
+      },
+      "backup_heater_dhw_runtime": {
+        "name": "Backup heater runtime (DHW)"
+      },
+      "backup_heater_heating_runtime": {
+        "name": "Backup heater runtime (heating)"
+      },
+      "water_flow": {
+        "name": "Water flow"
+      },
+      "power_input": {
+        "name": "Power input"
+      },
+      "heating_capacity": {
+        "name": "Heat output"
+      },
+      "cop": {
+        "name": "COP"
+      },
+      "energy_consumption": {
+        "name": "Energy consumption (total)"
+      },
+      "heating_energy_consumed": {
+        "name": "Heating energy consumed"
+      },
+      "heating_energy_generated": {
+        "name": "Heating energy generated"
+      },
+      "cooling_energy_consumed": {
+        "name": "Cooling energy consumed"
+      },
+      "cooling_energy_generated": {
+        "name": "Cooling energy generated"
+      },
+      "dhw_energy_consumed": {
+        "name": "DHW energy consumed"
+      },
+      "dhw_energy_generated": {
+        "name": "DHW energy generated"
+      },
+      "ac_input_voltage": {
+        "name": "AC input voltage"
+      },
+      "ac_input_current": {
+        "name": "AC input current"
+      },
+      "input_current_1": {
+        "name": "Input current L1"
+      },
+      "input_current_2": {
+        "name": "Input current L2"
+      },
+      "input_current_3": {
+        "name": "Input current L3"
+      },
+      "compressor_phase_current": {
+        "name": "Compressor phase current"
+      },
+      "dc_bus_voltage": {
+        "name": "DC bus voltage"
+      },
+      "ipm_temperature": {
+        "name": "IPM temperature"
+      },
+      "main_pump_pwm_output": {
+        "name": "Main pump PWM output"
+      },
+      "main_pump_pwm_feedback": {
+        "name": "Main pump PWM feedback"
+      },
+      "operating_state": {
+        "name": "Operating state",
+        "state": {
+          "cooling": "Cooling",
+          "heating": "Heating",
+          "defrost": "Defrost",
+          "disinfection": "Disinfection",
+          "dhw": "Hot water"
+        }
+      },
+      "driver_board_status": {
+        "name": "Driver board status"
+      },
+      "display_comm_success": {
+        "name": "Display communication quality"
+      },
+      "inverter_comm_success": {
+        "name": "Inverter communication quality"
+      },
+      "fault_register_2081": {
+        "name": "Fault register 2081"
+      },
+      "fault_register_2082": {
+        "name": "Fault register 2082"
+      },
+      "fault_register_2083": {
+        "name": "Fault register 2083"
+      },
+      "fault_register_2084": {
+        "name": "Fault register 2084"
+      },
+      "fault_register_2085": {
+        "name": "Fault register 2085"
+      },
+      "fault_register_2086": {
+        "name": "Fault register 2086"
+      },
+      "fault_register_2087": {
+        "name": "Fault register 2087"
+      },
+      "fault_register_2088": {
+        "name": "Fault register 2088"
+      },
+      "fault_register_2089": {
+        "name": "Fault register 2089"
+      },
+      "fault_register_2090": {
+        "name": "Fault register 2090"
+      },
+      "output_status_register": {
+        "name": "Output status register"
+      },
+      "input_status_register": {
+        "name": "Input status register"
+      },
+      "water_delta_t": {
+        "name": "Water ΔT (outlet − inlet)"
+      },
+      "thermal_power": {
+        "name": "Thermal power (calculated)"
+      },
+      "active_faults": {
+        "name": "Active faults"
+      },
+      "firmware": {
+        "name": "Controller firmware"
+      }
+    },
+    "binary_sensor": {
+      "power_state": {
+        "name": "Unit running"
+      },
+      "defrost_active": {
+        "name": "Defrost"
+      },
+      "disinfection_active": {
+        "name": "Disinfection running"
+      },
+      "silent_mode_active": {
+        "name": "Silent mode active"
+      },
+      "fan_high_speed": {
+        "name": "Fan high speed"
+      },
+      "fan_low_speed": {
+        "name": "Fan low speed"
+      },
+      "main_circulation_pump": {
+        "name": "Main circulation pump"
+      },
+      "dhw_pump_running": {
+        "name": "DHW pump"
+      },
+      "four_way_valve": {
+        "name": "Four-way valve"
+      },
+      "electric_heater_stage_1": {
+        "name": "Electric heater stage 1"
+      },
+      "electric_heater_stage_2": {
+        "name": "Electric heater stage 2"
+      },
+      "dhw_3_way_valve": {
+        "name": "DHW 3-way valve"
+      },
+      "alarm_output": {
+        "name": "Alarm output"
+      },
+      "crankcase_heater": {
+        "name": "Crankcase heater"
+      },
+      "chassis_heater": {
+        "name": "Chassis heater"
+      },
+      "heat_pump_enabled": {
+        "name": "Heat pump output"
+      },
+      "hydrobox_electric_heater": {
+        "name": "Hydrobox electric heater"
+      },
+      "tank_electric_heater": {
+        "name": "Tank electric heater"
+      },
+      "high_pressure_switch": {
+        "name": "High pressure switch"
+      },
+      "low_pressure_switch": {
+        "name": "Low pressure switch"
+      },
+      "electric_heater_overload_input": {
+        "name": "Electric heater overload input"
+      },
+      "emergency_input": {
+        "name": "Emergency input"
+      },
+      "ac_mode_input": {
+        "name": "Heating/cooling demand input"
+      },
+      "dhw_mode_input": {
+        "name": "DHW demand input"
+      },
+      "ac_switch": {
+        "name": "AC linkage switch"
+      },
+      "water_flow_detected": {
+        "name": "Water flow"
+      },
+      "ipm_overcurrent_fault": {
+        "name": "IPM overcurrent"
+      },
+      "compressor_drive_fault": {
+        "name": "Compressor drive fault"
+      },
+      "compressor_overcurrent": {
+        "name": "Compressor overcurrent"
+      },
+      "ac_phase_loss": {
+        "name": "Input phase loss"
+      },
+      "ipm_sampling_fault": {
+        "name": "IPM current sampling fault"
+      },
+      "drive_board_overheat": {
+        "name": "Drive board overheat"
+      },
+      "refrigerant_charge_fault": {
+        "name": "Refrigerant charge fault"
+      },
+      "dc_bus_overvoltage": {
+        "name": "DC bus overvoltage"
+      },
+      "dc_bus_undervoltage": {
+        "name": "DC bus undervoltage"
+      },
+      "ac_undervoltage": {
+        "name": "AC undervoltage"
+      },
+      "ac_overcurrent": {
+        "name": "AC overcurrent"
+      },
+      "ipm_overheat_protection": {
+        "name": "IPM overheat protection"
+      },
+      "compressor_phase_loss": {
+        "name": "Compressor phase loss"
+      },
+      "eeprom_fault": {
+        "name": "EEPROM fault"
+      },
+      "ac_overvoltage_protection": {
+        "name": "AC overvoltage protection"
+      },
+      "compressor_overspeed_protection": {
+        "name": "Compressor overspeed"
+      },
+      "compressor_frequency_reduction_warning": {
+        "name": "Compressor frequency limited"
+      },
+      "weak_magnetic_field_warning": {
+        "name": "Field weakening warning"
+      },
+      "power_module_overheat_warning": {
+        "name": "Power module overheat warning"
+      },
+      "eeprom_warning": {
+        "name": "EEPROM warning"
+      },
+      "compressor_start_failure": {
+        "name": "Compressor start failure"
+      },
+      "heating_return_sensor_fault": {
+        "name": "Heating return sensor fault"
+      },
+      "heating_outlet_sensor_fault": {
+        "name": "Heating outlet sensor fault"
+      },
+      "high_pressure_protection": {
+        "name": "High pressure protection"
+      },
+      "low_pressure_protection": {
+        "name": "Low pressure protection"
+      },
+      "water_flow_protection": {
+        "name": "Water flow protection"
+      },
+      "electric_heater_overload_protection": {
+        "name": "Electric heater overload"
+      },
+      "freeze_protection_stage_1": {
+        "name": "Freeze protection stage 1"
+      },
+      "freeze_protection_stage_2": {
+        "name": "Freeze protection stage 2"
+      },
+      "system_freeze_protection": {
+        "name": "System freeze protection"
+      },
+      "room_temperature_sensor_fault": {
+        "name": "Room temperature sensor fault"
+      },
+      "discharge_overtemperature_protection": {
+        "name": "Discharge overtemperature"
+      },
+      "fan_1_overload_limitation": {
+        "name": "Fan 1 overload"
+      },
+      "fan_2_overload_limitation": {
+        "name": "Fan 2 overload"
+      },
+      "excessive_water_delta_t_protection": {
+        "name": "Excessive water ΔT"
+      },
+      "outlet_water_overtemperature_protection": {
+        "name": "Outlet water overtemperature"
+      },
+      "evaporator_outlet_sensor_fault": {
+        "name": "Evaporator outlet sensor fault"
+      },
+      "return_water_sensor_fault": {
+        "name": "Return water sensor fault"
+      },
+      "outlet_water_sensor_fault": {
+        "name": "Outlet water sensor fault"
+      },
+      "repeated_high_pressure_protection": {
+        "name": "Repeated high pressure protection"
+      },
+      "repeated_low_pressure_protection": {
+        "name": "Repeated low pressure protection"
+      },
+      "repeated_water_flow_protection": {
+        "name": "Repeated water flow protection"
+      },
+      "repeated_electric_heater_protection": {
+        "name": "Repeated electric heater protection"
+      },
+      "repeated_freeze_protection": {
+        "name": "Repeated freeze protection"
+      },
+      "repeated_discharge_overtemperature": {
+        "name": "Repeated discharge overtemperature"
+      },
+      "repeated_excessive_delta_t": {
+        "name": "Repeated excessive ΔT"
+      },
+      "repeated_low_outlet_temperature": {
+        "name": "Repeated low outlet temperature"
+      },
+      "repeated_high_outlet_temperature": {
+        "name": "Repeated high outlet temperature"
+      },
+      "water_inlet_sensor_fault": {
+        "name": "Water inlet sensor fault"
+      },
+      "water_outlet_sensor_fault": {
+        "name": "Water outlet sensor fault"
+      },
+      "heat_exchanger_sensor_fault": {
+        "name": "Coil sensor fault"
+      },
+      "outdoor_temperature_sensor_fault": {
+        "name": "Outdoor temperature sensor fault"
+      },
+      "return_air_sensor_fault": {
+        "name": "Suction sensor fault"
+      },
+      "anti_freeze_sensor_fault": {
+        "name": "Antifreeze sensor fault"
+      },
+      "heat_exchanger_outlet_sensor_fault": {
+        "name": "Heat exchanger outlet sensor fault"
+      },
+      "evi_inlet_sensor_fault": {
+        "name": "EVI inlet sensor fault"
+      },
+      "evi_outlet_sensor_fault": {
+        "name": "EVI outlet sensor fault"
+      },
+      "discharge_temperature_sensor_fault": {
+        "name": "Discharge sensor fault"
+      },
+      "compressor_running": {
+        "name": "Compressor running"
+      },
+      "fault": {
+        "name": "Fault"
+      }
+    },
+    "number": {
+      "dhw_setpoint": {
+        "name": "DHW setpoint"
+      },
+      "heating_setpoint": {
+        "name": "Heating setpoint"
+      },
+      "cooling_setpoint": {
+        "name": "Cooling setpoint"
+      },
+      "room_setpoint": {
+        "name": "Room setpoint"
+      },
+      "curve_slope": {
+        "name": "Weather curve slope"
+      },
+      "curve_offset": {
+        "name": "Weather curve offset"
+      },
+      "forced_dhw_time": {
+        "name": "Mode switch time (DHW/heating)"
+      },
+      "maximum_outlet_temperature": {
+        "name": "Max heat pump outlet temperature"
+      },
+      "max_outlet_heating": {
+        "name": "Max outlet temperature in heating"
+      },
+      "main_pump_interval": {
+        "name": "Main pump interval"
+      },
+      "main_pump_runtime": {
+        "name": "Main pump run duration"
+      },
+      "circulation_pump_speed": {
+        "name": "Circulation pump speed"
+      },
+      "disinfection_temperature": {
+        "name": "Disinfection temperature"
+      },
+      "disinfection_duration": {
+        "name": "Disinfection duration"
+      },
+      "disinfection_start_hour": {
+        "name": "Disinfection start hour"
+      },
+      "disinfection_interval": {
+        "name": "Disinfection interval"
+      },
+      "heating_restart_delta": {
+        "name": "Heating restart difference"
+      },
+      "heating_standby_delta": {
+        "name": "Heating standby difference"
+      },
+      "cooling_restart_delta": {
+        "name": "Cooling restart difference"
+      },
+      "cooling_standby_delta": {
+        "name": "Cooling standby difference"
+      },
+      "dhw_restart_delta": {
+        "name": "DHW restart difference"
+      },
+      "dhw_standby_delta": {
+        "name": "DHW standby difference"
+      },
+      "heater_on_ambient": {
+        "name": "Electric heater enable outdoor temp"
+      },
+      "heater_delay": {
+        "name": "Electric heater delay after compressor"
+      },
+      "heater_on_delta": {
+        "name": "Electric heater on difference"
+      },
+      "heater_off_delta": {
+        "name": "Electric heater off difference"
+      },
+      "heater_no_delay_ambient": {
+        "name": "Outdoor temp for heater without delay"
+      },
+      "shutdown_ambient": {
+        "name": "Shutdown outdoor temperature"
+      },
+      "auto_heating_ambient": {
+        "name": "Outdoor temp for auto heating"
+      },
+      "min_cooling_ambient": {
+        "name": "Min outdoor temp for cooling"
+      },
+      "dhw_setpoint_min": {
+        "name": "DHW setpoint minimum"
+      },
+      "dhw_setpoint_max": {
+        "name": "DHW setpoint maximum"
+      },
+      "heating_setpoint_min": {
+        "name": "Heating setpoint minimum"
+      },
+      "heating_setpoint_max": {
+        "name": "Heating setpoint maximum"
+      },
+      "cooling_setpoint_min": {
+        "name": "Cooling setpoint minimum"
+      },
+      "cooling_setpoint_max": {
+        "name": "Cooling setpoint maximum"
+      }
+    },
+    "select": {
+      "operating_mode": {
+        "name": "Operating mode",
+        "state": {
+          "dhw": "Hot water",
+          "heating": "Heating",
+          "cooling": "Cooling",
+          "dhw_heating": "Hot water + heating",
+          "dhw_cooling": "Hot water + cooling"
+        }
+      },
+      "electric_heater_mode": {
+        "name": "Electric heater location",
+        "state": {
+          "not_available": "Not available",
+          "main_circuit": "Main water circuit",
+          "dhw_tank": "DHW tank",
+          "buffer_tank": "Buffer tank"
+        }
+      },
+      "circulation_pump_mode": {
+        "name": "Main pump mode",
+        "state": {
+          "always_on": "Always on",
+          "saving": "Saving",
+          "interval": "Interval"
+        }
+      },
+      "dhw_pump_mode": {
+        "name": "DHW pump mode",
+        "state": {
+          "always_on": "Always on",
+          "saving": "Saving",
+          "interval": "Interval"
+        }
+      },
+      "temperature_control_source": {
+        "name": "Temperature control source",
+        "state": {
+          "outlet": "Outlet water temperature",
+          "room": "Room temperature",
+          "buffer": "Buffer tank temperature",
+          "inlet": "Inlet water temperature"
+        }
+      },
+      "electric_heater_stage": {
+        "name": "Electric heater stages",
+        "state": {
+          "stage_1": "Stage 1",
+          "stage_2": "Stage 2",
+          "stage_3": "Stage 3"
+        }
+      },
+      "defrost_heat_source": {
+        "name": "Defrost heat source",
+        "state": {
+          "current": "Stay on current circuit",
+          "dhw": "DHW circuit",
+          "heating": "Heating circuit"
+        }
+      }
+    },
+    "switch": {
+      "power": {
+        "name": "Power"
+      },
+      "silent_mode": {
+        "name": "Silent mode"
+      },
+      "weather_compensation": {
+        "name": "Weather compensation"
+      },
+      "disinfection": {
+        "name": "Legionella disinfection"
+      },
+      "manual_water_pump": {
+        "name": "Main pump manual control"
+      },
+      "cooling_enabled": {
+        "name": "Cooling function enabled"
+      },
+      "heater_during_defrost": {
+        "name": "Electric heater during defrost"
+      },
+      "power_off_memory": {
+        "name": "Power-off memory"
+      }
+    },
+    "button": {
+      "manual_defrost": {
+        "name": "Start manual defrost"
+      }
+    },
+    "climate": {
+      "heating": {
+        "name": "Heating / cooling"
+      }
+    },
+    "water_heater": {
+      "dhw": {
+        "name": "Hot water"
+      }
+    }
+  }
+}
