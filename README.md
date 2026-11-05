@@ -34,6 +34,12 @@ RS485 **A/B** terminals of the heat pump → RS485 gateway (e.g. Elfin EW11, USR
 USB adapter. Line settings: **9600 8N1**. Slave id = parameter *H10* (factory default 16, often 1).
 Gateway mode: *Modbus TCP ⇄ RTU* → choose "Modbus TCP"; *transparent* → choose "RTU over TCP".
 
+**Slave id 0.** Some firmwares (e.g. WF220809 on CH-HP09UIMPZK) answer only on unit address 0, whatever H10
+is set to. Address 0 is the Modbus *broadcast* address: every write (setpoints, modes, the automatic clock
+sync) is executed by **all** devices on the RS485 bus. The integration accepts 0 only after an explicit
+confirmation that the heat pump is the only device on that bus — otherwise give the heat pump its own
+gateway/adapter.
+
 ## Installation
 
 1. The integration is in the default HACS store:
@@ -78,7 +84,9 @@ python3 scripts/gen_docs.py
 
 Локальна інтеграція для теплового насоса **Cooper&Hunter CH-HP15UIMPZM** (контролер LinkedGo) через
 RS485/Modbus. Підключення: клеми **A/B** насоса → RS485‑шлюз (Modbus TCP або прозорий режим) або
-USB‑RS485; лінія **9600 8N1**, адреса — параметр H10.
+USB‑RS485; лінія **9600 8N1**, адреса — параметр H10. Деякі прошивки (наприклад, WF220809) відповідають
+лише на адресі 0 — це широкомовна адреса Modbus, тож записи виконають **усі** пристрої на шині; інтеграція
+дозволяє 0 лише після підтвердження, що насос — єдиний пристрій на цій шині.
 
 Встановлення: HACS → пошук *Cooper&Hunter Heat Pump* → Download (інтеграція є в стандартному
 каталозі HACS) або копіювання `custom_components/cooper_hunter_hp` у `/config/custom_components/`,

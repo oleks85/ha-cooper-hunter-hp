@@ -31,7 +31,17 @@ CONFIG = {
                     "slave": "Modbus slave ID", "entity_prefix": "Entity ID prefix"}),
         "transport": {"tcp": "Modbus TCP gateway", "rtu_over_tcp": "RTU over TCP (transparent gateway)",
                       "serial": "Serial port (USB-RS485)"},
+        "slave_hint": ("Usually 1 (parameter H10 on the controller). Use 0 only if the controller answers on no "
+                       "other address (e.g. firmware WF220809): 0 is the Modbus broadcast address."),
+        "broadcast": ("Confirm broadcast address 0",
+                      "Address 0 is the Modbus **broadcast** address. Every write the integration sends — setpoints, "
+                      "modes, and the automatic controller clock sync — is executed by **all devices on this RS485 "
+                      "bus**, not only the heat pump.\n\nUse it only if the heat pump is the **only device** on this "
+                      "bus / gateway. If other Modbus devices (meters, sensor modules, inverters) share the bus, "
+                      "connect the heat pump to a separate gateway or adapter instead.",
+                      {"confirm_single_device": "The heat pump is the only device on this RS485 bus"}),
         "errors": {"cannot_connect": "Cannot read the heat pump. Check address, port, slave ID and gateway mode.",
+                   "confirm_required": "Address 0 can only be used when the heat pump is the only device on the bus.",
                    "unknown": "Unexpected error"},
         "abort": {"already_configured": "This heat pump is already configured"},
         "options": ("Polling", {"scan_interval": "Status polling interval (s)",
@@ -49,7 +59,18 @@ CONFIG = {
                     "slave": "Modbus slave ID", "entity_prefix": "Префікс ID сутностей"}),
         "transport": {"tcp": "Modbus TCP шлюз", "rtu_over_tcp": "RTU over TCP (прозорий шлюз)",
                       "serial": "Послідовний порт (USB-RS485)"},
-        "errors": {"cannot_connect": "Не вдалося прочитати тепловий насос. Перевірте адресу, порт, slave ID і режим шлюзу.",
+        "slave_hint": ("Зазвичай 1 (параметр H10 на контролері). 0 — лише якщо контролер не відповідає на жодну "
+                       "іншу адресу (наприклад, прошивка WF220809): 0 — широкомовна адреса Modbus."),
+        "broadcast": ("Підтвердьте широкомовну адресу 0",
+                      "Адреса 0 — це **широкомовна** адреса Modbus. Кожен запис, який надсилає інтеграція "
+                      "(уставки, режими та автоматична синхронізація годинника контролера), виконають **усі "
+                      "пристрої на цій шині RS485**, а не лише тепловий насос.\n\nВикористовуйте її, лише якщо "
+                      "тепловий насос — **єдиний пристрій** на цій шині / шлюзі. Якщо на шині є інші Modbus-пристрої "
+                      "(лічильники, модулі датчиків, інвертори), підключіть насос до окремого шлюзу чи адаптера.",
+                      {"confirm_single_device": "Тепловий насос — єдиний пристрій на цій шині RS485"}),
+        "errors": {"cannot_connect": ("Не вдалося прочитати тепловий насос. Перевірте адресу, порт, slave ID "
+                                      "і режим шлюзу."),
+                   "confirm_required": "Адресу 0 можна використати, лише якщо тепловий насос — єдиний пристрій на шині.",
                    "unknown": "Неочікувана помилка"},
         "abort": {"already_configured": "Цей тепловий насос уже налаштовано"},
         "options": ("Опитування", {"scan_interval": "Інтервал опитування стану (с)",
@@ -89,9 +110,11 @@ def build(lang: str) -> dict:
     entity["water_heater"]["dhw"] = {"name": R.WATER_HEATER_NAME[idx]}
 
     steps = {}
-    for step in ("user", "network", "serial"):
+    for step in ("user", "network", "serial", "broadcast"):
         title, desc, data = c[step]
         steps[step] = {"title": title, "description": desc, "data": data}
+        if "slave" in data:
+            steps[step]["data_description"] = {"slave": c["slave_hint"]}
     return {
         "config": {"step": steps, "error": c["errors"], "abort": c["abort"]},
         "options": {"step": {"init": {"title": c["options"][0], "data": c["options"][1]}}},

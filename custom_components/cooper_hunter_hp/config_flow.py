@@ -40,6 +40,11 @@ _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = "Heat pump"
 
+# Modbus broadcast address. Some LinkedGo firmwares (e.g. WF220809) answer only on it,
+# but every device on the RS485 bus executes writes sent to it.
+BROADCAST_SLAVE = 0
+CONF_CONFIRM_SINGLE_DEVICE = "confirm_single_device"
+
 
 async def validate_connection(data: dict[str, Any]) -> str | None:
     """Read the status page header; return firmware id or raise ModbusError."""
@@ -62,7 +67,7 @@ def _common_schema(defaults: dict[str, Any]) -> dict:
         vol.Required(CONF_NAME, default=defaults.get(CONF_NAME, DEFAULT_NAME)): str,
         vol.Required(CONF_MODEL, default=defaults.get(CONF_MODEL, DEFAULT_MODEL)): str,
         vol.Required(CONF_SLAVE, default=defaults.get(CONF_SLAVE, DEFAULT_SLAVE)): vol.All(
-            vol.Coerce(int), vol.Range(min=1, max=247)
+            vol.Coerce(int), vol.Range(min=BROADCAST_SLAVE, max=247)
         ),
         vol.Optional(CONF_ENTITY_PREFIX, default=defaults.get(CONF_ENTITY_PREFIX, DEFAULT_PREFIX)): str,
     }
@@ -73,6 +78,7 @@ class HeatPumpConfigFlow(ConfigFlow, domain=DOMAIN):
 
     def __init__(self) -> None:
         self._transport: str = TRANSPORT_TCP
+        self._pending: dict[str, Any] | None = None
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         if user_input is not None:
@@ -150,8 +156,25 @@ class HeatPumpConfigFlow(ConfigFlow, domain=DOMAIN):
             return None
         prefix = (data.get(CONF_ENTITY_PREFIX) or "").strip().lower()
         data[CONF_ENTITY_PREFIX] = prefix
+        if data[CONF_SLAVE] == BROADCAST_SLAVE:
+            self._pending = data
+            return await self.async_step_broadcast()
+        return self._create(data)
+
+    def _create(self, data: dict[str, Any]) -> ConfigFlowResult:
         title = data.pop(CONF_NAME)
         return self.async_create_entry(title=title, data=data)
+
+    async def async_step_broadcast(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """Require explicit confirmation before using the Modbus broadcast address."""
+        assert self._pending is not None
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            if user_input.get(CONF_CONFIRM_SINGLE_DEVICE):
+                return self._create(self._pending)
+            errors["base"] = "confirm_required"
+        schema = vol.Schema({vol.Required(CONF_CONFIRM_SINGLE_DEVICE, default=False): bool})
+        return self.async_show_form(step_id="broadcast", data_schema=schema, errors=errors)
 
     @staticmethod
     @callback

@@ -18,6 +18,9 @@
           "model": "Model",
           "slave": "Modbus slave ID",
           "entity_prefix": "Entity ID prefix"
+        },
+        "data_description": {
+          "slave": "Usually 1 (parameter H10 on the controller). Use 0 only if the controller answers on no other address (e.g. firmware WF220809): 0 is the Modbus broadcast address."
         }
       },
       "serial": {
@@ -32,11 +35,22 @@
           "model": "Model",
           "slave": "Modbus slave ID",
           "entity_prefix": "Entity ID prefix"
+        },
+        "data_description": {
+          "slave": "Usually 1 (parameter H10 on the controller). Use 0 only if the controller answers on no other address (e.g. firmware WF220809): 0 is the Modbus broadcast address."
+        }
+      },
+      "broadcast": {
+        "title": "Confirm broadcast address 0",
+        "description": "Address 0 is the Modbus **broadcast** address. Every write the integration sends — setpoints, modes, and the automatic controller clock sync — is executed by **all devices on this RS485 bus**, not only the heat pump.\n\nUse it only if the heat pump is the **only device** on this bus / gateway. If other Modbus devices (meters, sensor modules, inverters) share the bus, connect the heat pump to a separate gateway or adapter instead.",
+        "data": {
+          "confirm_single_device": "The heat pump is the only device on this RS485 bus"
         }
       }
     },
     "error": {
       "cannot_connect": "Cannot read the heat pump. Check address, port, slave ID and gateway mode.",
+      "confirm_required": "Address 0 can only be used when the heat pump is the only device on the bus.",
       "unknown": "Unexpected error"
     },
     "abort": {

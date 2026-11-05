@@ -280,3 +280,78 @@ async def test_write_clamped_echo_warns(fake_slave, caplog) -> None:
     await client.write_register(1, 1157, 999)
     assert "requested 999 but controller stored 600" in caplog.text
     await client.close()
+
+
+NETWORK_INPUT = {CONF_NAME: "Heat pump", CONF_MODEL: "CH-HP09UIMPZK", CONF_ENTITY_PREFIX: "hp"}
+
+
+async def _start_network_flow(hass: HomeAssistant) -> str:
+    result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": config_entries.SOURCE_USER})
+    result = await hass.config_entries.flow.async_configure(result["flow_id"], {CONF_TRANSPORT: "tcp"})
+    assert result["step_id"] == "network"
+    return result["flow_id"]
+
+
+async def test_config_flow_broadcast_address_requires_confirmation(hass: HomeAssistant, fake_slave) -> None:
+    """Unit 0 (firmwares that answer only on the broadcast address) needs an explicit confirmation."""
+    fake_slave.slave = 0
+    flow_id = await _start_network_flow(hass)
+    result = await hass.config_entries.flow.async_configure(
+        flow_id, {**NETWORK_INPUT, CONF_HOST: "127.0.0.1", CONF_PORT: fake_slave.port, CONF_SLAVE: 0})
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "broadcast"
+
+    result = await hass.config_entries.flow.async_configure(flow_id, {"confirm_single_device": False})
+    assert result["step_id"] == "broadcast"
+    assert result["errors"] == {"base": "confirm_required"}
+
+    with patch("custom_components.cooper_hunter_hp.async_setup_entry", return_value=True):
+        result = await hass.config_entries.flow.async_configure(flow_id, {"confirm_single_device": True})
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert result["data"][CONF_SLAVE] == 0
+    assert result["data"][CONF_TRANSPORT] == "tcp"
+    assert CONF_NAME not in result["data"]
+
+
+async def test_config_flow_broadcast_address_not_answering(hass: HomeAssistant, fake_slave) -> None:
+    """A compliant controller ignores reads on unit 0, so 0 cannot be saved by mistake."""
+    from custom_components.cooper_hunter_hp import create_client as real_create_client
+
+    def fast_client(data):
+        client = real_create_client(data)
+        client._timeout, client._retries = 0.3, 0
+        return client
+
+    flow_id = await _start_network_flow(hass)
+    with patch("custom_components.cooper_hunter_hp.create_client", side_effect=fast_client):
+        result = await hass.config_entries.flow.async_configure(
+            flow_id, {**NETWORK_INPUT, CONF_HOST: "127.0.0.1", CONF_PORT: fake_slave.port, CONF_SLAVE: 0})
+    assert result["step_id"] == "network"
+    assert result["errors"] == {"base": "cannot_connect"}
+
+
+async def test_config_flow_regular_address_skips_confirmation(hass: HomeAssistant, fake_slave) -> None:
+    flow_id = await _start_network_flow(hass)
+    with patch("custom_components.cooper_hunter_hp.async_setup_entry", return_value=True):
+        result = await hass.config_entries.flow.async_configure(
+            flow_id, {**NETWORK_INPUT, CONF_HOST: "127.0.0.1", CONF_PORT: fake_slave.port, CONF_SLAVE: 1})
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert result["data"][CONF_SLAVE] == 1
+
+
+async def test_broadcast_unit_end_to_end(hass: HomeAssistant, fake_slave) -> None:
+    """An entry on unit 0 polls and writes like any other unit."""
+    fake_slave.slave = 0
+    entry = MockConfigEntry(
+        domain=DOMAIN, title="Heat pump", unique_id=f"127.0.0.1:{fake_slave.port}:0",
+        data={CONF_TRANSPORT: "tcp", CONF_HOST: "127.0.0.1", CONF_PORT: fake_slave.port, CONF_SLAVE: 0,
+              CONF_MODEL: "CH-HP09UIMPZK", CONF_ENTITY_PREFIX: "hp"},
+    )
+    entry.add_to_hass(hass)
+    with patch("custom_components.cooper_hunter_hp.coordinator.WRITE_SETTLE_DELAY", 0):
+        assert await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+        assert float(hass.states.get("sensor.hp_dhw_tank_temperature").state) == t(2047)
+        await hass.services.async_call("number", "set_value",
+                                       {"entity_id": "number.hp_dhw_setpoint", "value": 50}, blocking=True)
+    assert (1157, 500) in fake_slave.writes
